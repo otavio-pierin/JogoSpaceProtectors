@@ -1,0 +1,4 @@
+Score: 7, nave1
+Score: 7, nave2
+Score: 4, nave2
+Score: 35, nave1
