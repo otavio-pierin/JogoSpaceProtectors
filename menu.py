@@ -11,13 +11,13 @@ class Menu():
     def __init__(self):
         pygame.init() #inicializar pygame
         # Atributos tela
-        self.__screen = pygame.display.set_mode((800, 600))
+        self.__screen = pygame.display.set_mode((1000, 800))
         self.__background = pygame.image.load('Image/fundoMenu.jpg')
 
         # Atributos fontes
         self.__title_font = pygame.font.Font('font/Laira.otf', 45)  # Fonte maior para o título
         self.__option_font = pygame.font.Font('font/Orbitron-VariableFont_wght.ttf', 36)  # Fonte maior para as opções
-        self.__button_font = pygame.font.Font('font/Laira.otf', 24)
+        self.__button_font = pygame.font.Font('font/Laira.otf', 24) #Fonte para a escrita dos botões
 
         #atributo das naves
         self.__nave1 = pygame.image.load('Image/nave1.png')
@@ -143,6 +143,8 @@ class Menu():
             # 'with open' é a forma mais segura de garantir que o arquivo será fechado.
             with open("log.txt", "r", encoding="utf-8") as file:
                 scores_para_exibir = file.readlines()
+            
+            scores_para_exibir = scores_para_exibir[-15:] #list slicing p/ mostrar só os 10 últimos
             
             if not scores_para_exibir:
                 scores_para_exibir.append("Nenhuma pontuação registrada.\n")

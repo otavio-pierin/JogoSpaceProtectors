@@ -1,4 +1,12 @@
-Score: 7, nave1
-Score: 7, nave2
+Score: 1, nave1
+Score: 1, nave2
 Score: 4, nave2
 Score: 35, nave1
+Score: 75, nave1
+Score: 37, nave2
+Score: 4, nave2
+Score: 35, nave1
+Score: 7, nave1
+Score: 7, nave2
+Score: 94, nave2
+Score: 305, nave1

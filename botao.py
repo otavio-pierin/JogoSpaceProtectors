@@ -13,7 +13,7 @@ class Botao:
         self.__cor_atual = cor_fundo
         self.__clicado = False
 
-    # --- Getters e Setters ---
+    #Getters e Setters
     @property
     def rect(self):
         return self.__rect
@@ -47,12 +47,6 @@ class Botao:
     def cor_atual(self, value):
         self.__cor_fundo = value    
     @property
-    def cor_hover(self):
-        return self.__cor_hover
-    @cor_hover.setter
-    def cor_hover(self, value):
-        self.__cor_hover = value
-    @property
     def cor_fundo(self):
         return self.__cor_fundo
     @cor_fundo.setter
@@ -74,11 +68,8 @@ class Botao:
 
         # Verifica se o mouse está sobre o botão (efeito hover)
         if self.rect.collidepoint(mouse_pos):
-            self.cor_atual = self.cor_hover
             # Verifica se houve um clique do mouse
             if event.type == pygame.MOUSEBUTTONDOWN:
                 self.clicado = True
-        else:
-            self.cor_atual = self.cor_fundo
         
         return self.clicado
