@@ -2,10 +2,11 @@ import pygame
 import math
 from objeto import Objeto
 
-class Poder(Objeto):
-    def __init__(self, x, y, image_path, velocidade_y):
+
+class Poder(Objeto): #classe do poder do inimigo
+    def __init__(self, x, y, image_path, speed_y):
         super().__init__(x, y, image_path)
-        self.__speed_y = velocidade_y
+        self.__speed_y = speed_y
         self.__state = "ready"
     
     #Getters e setters

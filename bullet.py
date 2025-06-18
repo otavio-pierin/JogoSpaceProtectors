@@ -1,30 +1,11 @@
 import pygame
 import math
 from objeto import Objeto
+from poder import Poder
 
-class Bullet(Objeto):
+class Bullet(Poder): #classe do poder dos jogadores
     def __init__(self, x, y, image_path, speed_y):
-        super().__init__(x, y, image_path)
-        self.__speed_y = speed_y
-        self.__state = "ready"        
-
-    # Getter e setter para a velocidade em y
-    @property
-    def speed_y(self):
-        return self.__speed_y
-
-    @speed_y.setter
-    def speed_y(self, value):
-        self.__speed_y = value
-
-    # Getter e setter para o estado da bala
-    @property
-    def state(self):
-        return self.__state
-
-    @state.setter
-    def state(self, value):
-        self.__state = value
+        super().__init__(x, y, image_path, speed_y)        
 
     # Método para disparar a bala
     def fire(self, x):
@@ -34,7 +15,7 @@ class Bullet(Objeto):
     # Método para mover a bala
     def move(self):
         if self.state == "fire":
-            self.y -= self.__speed_y
+            self.y -= self.speed_y
         if self.y <= 0:
             self.state = "ready"
             self.y = 720

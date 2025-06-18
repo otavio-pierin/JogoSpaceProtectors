@@ -37,3 +37,5 @@ Score: 11, nave2
 Score: 10, nave2
 Score: 2, nave2
 Score: 40, nave2
+Score: 19, nave1
+Score: 33, nave2
