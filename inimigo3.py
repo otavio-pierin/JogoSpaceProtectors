@@ -4,15 +4,12 @@ from objeto import Objeto
 from inimigo import Inimigo
 from poder import Poder
 
-class Enemy3(Inimigo):
+class Inimigo3(Inimigo):
     #inimigo se move lentamente para baixo em zig-zag.
 
     def __init__(self, x, y, speed_x, speed_y, image_path, speed_poder, image_poder, size):
-        super().__init__(self, x, y, speed_x, speed_y, image_path, speed_poder, image_poder)
+        super().__init__(x, y, speed_x, speed_y, image_path, speed_poder, image_poder)
         self.image = pygame.transform.scale(self.image, size) #transforma a imagem do inimigo tupla(size,size)
-
-        #self.speed_y = 0.25  # Velocidade de queda LENTA
-        #self.speed_x = 0.5  # Velocidade do movimento lateral
         
         # Atributos para o zig-zag
         self.__zig_zag_timer = pygame.time.get_ticks() #guarda o tempo desde que __init__ foi chamado
@@ -21,6 +18,9 @@ class Enemy3(Inimigo):
     @property
     def zig_zag_timer(self):
         return self.__zig_zag_timer
+    @zig_zag_timer.setter
+    def zig_zag_timer(self, valor):
+        self.__zig_zag_timer = valor
     @property
     def zig_zag_interval(self):
         return self.__zig_zag_interval  
@@ -40,18 +40,19 @@ class Enemy3(Inimigo):
             self.speed_x *= -1 # Inverte a direção do movimento lateral
 
         #limites laterais da tela
-        if self.x <= 0 or self.x >= 950: # 800 - largura da imagem (~64)
+        if self.x <= 0 or self.x >= 950:
             self.speed_x *= -1
 
-        # Lógica de tiro (opcional, pode ser ajustada)
+        # Lógica de tiro
         if self.power.state == "ready" and random.randint(0, 100) < 3:  # 3% de chance de atirar
-            self.power.fire(self._x + 32, self._y + 32)
+            self.power.fire(self.x + 32, self.y + 32)
+
+        # Se o inimigo ultrapassar a borda inferior da tela (800 de altura)
+        if self.y > 800:
+            self.reset_position()                
 
     def draw(self, screen):
         super().draw(screen)
-        self.power.move()
-        self.power.draw(screen)
 
     def reset_position(self):
         super().reset_position()
-        self.power.state = "ready"  # Reseta o estado do poder    

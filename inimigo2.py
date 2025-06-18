@@ -5,7 +5,7 @@ from poder import Poder
 
 class Inimigo2(Inimigo):
     def __init__(self, x, y, speed_x, speed_y, image_path, speed_poder, image_poder, size):
-        super().__init__(self, x, y, speed_x, speed_y, image_path, speed_poder, image_poder)
+        super().__init__(x, y, speed_x, speed_y, image_path, speed_poder, image_poder)
         self.image = pygame.transform.scale(self.image, size) #transforma a imagem do inimigo tupla(size,size)
 
     #Mover inimigo

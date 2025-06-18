@@ -24,6 +24,9 @@ class Objeto(ABC):
     @property
     def image(self):
         return self.__image
+    @image.setter
+    def image(self, novo):
+        self.__image = novo
 
     @abstractmethod
     def draw(self, screen):

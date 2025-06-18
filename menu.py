@@ -122,7 +122,7 @@ class Menu():
 
                 #verifica evento botão
                 if self.botao_score.verificar_evento(event):
-                    self.mostrarScore() # Chama a tela de scores se o botão for clicado
+                    personagem_selecionado = 'view_scores'
 
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     if nave1_rect.collidepoint(event.pos):
@@ -138,7 +138,7 @@ class Menu():
     def mostrarScore(self):
         scores_para_exibir = []
         
-        # --- 1. Tratamento de Exceções para Leitura do Arquivo ---
+        #Tratamento de Exceções para Leitura do Arquivo
         try:
             # 'with open' é a forma mais segura de garantir que o arquivo será fechado.
             with open("log.txt", "r", encoding="utf-8") as file:
@@ -202,7 +202,7 @@ class Menu():
             pygame.display.update()
     
 
-if __name__ == "__main__":
-    menu = Menu()
-    personagem_selecionado = menu.mostrarMenu()
-    pygame.quit()
+# if __name__ == "__main__":
+#     menu = Menu()
+#     personagem_selecionado = menu.mostrarMenu()
+#     pygame.quit()

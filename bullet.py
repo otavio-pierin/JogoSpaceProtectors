@@ -42,9 +42,9 @@ class Bullet(Objeto):
     # Método para desenhar a bala na tela
     def draw(self, screen):
         if self.state == "fire":
-            screen.blit(self._image, (self.x + 2, self.y + 2))
+            screen.blit(self.image, (self.x + 2, self.y + 2))
 
     # Método para verificar colisão com o inimigo
     def is_collision(self, enemy):
         distance = math.sqrt(math.pow(enemy.x - self.x, 2) + math.pow(enemy.y - self.y, 2))
-        return distance < 27
+        return distance < 40

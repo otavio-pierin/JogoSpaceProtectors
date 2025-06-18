@@ -51,7 +51,7 @@ class Inimigo(Objeto):
     def draw(self, screen):
         screen.blit(self.image,(self.x,self.y))
         self.power.move()
-        self.power.draw()
+        self.power.draw(screen)
 
     #resetar a posição do inimigo e estao do poder
     def reset_position(self):
