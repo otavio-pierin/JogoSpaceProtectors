@@ -92,7 +92,7 @@ class SpaceProtectors():
     def bullets(self):
         return self.__bullets
     @bullets.setter
-    def bullets(self, valor:list):
+    def bullets(self, valor):
         self.__bullets = valor
     
     #salvar pontuação
@@ -111,7 +111,7 @@ class SpaceProtectors():
     
     #Tela de game over
     def game_over_screen(self):
-        self.salvar_score()
+        self.salvar_score() #salva a pontuação
         mixer.music.pause()  # Pausa a música ao entrar na tela de Game Over
         while True:
             self.__screen.blit(self.__background, (0, 0))  # Define o fundo para a tela de Game Over
@@ -125,12 +125,14 @@ class SpaceProtectors():
             pos_x = (self.screen.get_width() - largura_botao) // 2
             pos_y = self.screen.get_height() //2  + (altura_botao + 30)
 
+            #instância para o botão de voltar ao menu
             botao_menu = Botao(pos_x, pos_y, largura_botao, altura_botao, "Reiniciar")
 
             # Centraliza o texto GAME OVER
             over_text_rect = over_text.get_rect(center=(self.__screen.get_width() // 2, self.__screen.get_height() // 2 - 50))
             self.__screen.blit(over_text, over_text_rect)
-
+            
+            #escrever a pontuação na tela
             if self.score_value == 0:
                 no_score_text = self.font.render("Sem pontuação!", True, (255, 255, 255))
                 no_score_text_rect = no_score_text.get_rect(center=(self.screen.get_width() // 2, self.screen.get_height() // 2 + 200))
@@ -153,140 +155,12 @@ class SpaceProtectors():
                         return  # Retorna ao menu principal         
 
             botao_menu.desenhar(self.screen, self.font)
-            pygame.display.update()
-    # def game(self):
-        self.score_value = 0
-        try:
-            #Carrega a música
-            mixer.music.play(-1)
-
-            #Personagem selecionado
-            #Bala da nave1 (única) ou lista de balas para nave2 (dupla)
-            if self.personagem_selecionado == "nave1":
-                player_image = 'Image/nave1.png'
-                bullet = Bullet(0, 720, 'Image/laser_amarelo.png', 10) #bala única                
-            else:
-                player_image = 'Image/nave2.png'
-                self.bullets = [Bullet(0,720, 'Image/laser_amarelo.png', 5), Bullet(5,720,'Image/laser_amarelo.png',5)] #Lista das balas da nave2                
-            
-            player = Jogador(370, 720, player_image)
-
-            #Inimigos tipo 1, 2 e 3
-            enemies = [Inimigo(random.randint(0,950), random.randint(50,150),6, 20, 'Image/inimigo5.png', 1, 'Image/poderenemy.png') for _ in range(5)] #gera 5 inimigos
-            enemy_size = enemies[0].image.get_size()
-            enemies2 = [Inimigo2(random.randint(0,950), random.randint(50,150),3.0, 20, 'Image/inimigo4.png', 1.0, 'Image/poderenemy2.png', (60,60)) for _ in range(6)] #gera 6 inimigos do tipo 2
-            enemies3 = [Inimigo3(random.randint(0,950), random.randint(50,150),4.5, 20, 'Image/inimigo3.png', 1.0, 'Image/laser_vermelho.png', (60,60)) for _ in range(3)] #gera 3 inimigos do tipo 3
-           
-            #Movimentação do jogador
-            running = True
-            while running:
-                self.screen.fill((0,0,0))
-                self.screen.blit(self.background, (0,0))
-
-                for event in pygame.event.get(): #captura evento dos periféricos
-                    if event.type == pygame.QUIT:
-                        running = False
-                    
-                    if event.type == pygame.KEYDOWN: #se apertar alguma tecla
-                        if event.key == pygame.K_LEFT:
-                            player.mov_x(-4)
-                        if event.key == pygame.K_RIGHT:
-                            player.mov_x(4)
-                        if event.key == pygame.K_SPACE:
-                            if self.personagem_selecionado == 'nave1' and bullet.state == "ready":
-                                bulletSound = mixer.Sound('Audio/laser_shot.wav')
-                                bulletSound.play()
-                                bullet.fire(player.x)
-                            elif self.personagem_selecionado == 'nave2' and self.bullets[0].state == 'ready':
-                                bulletSound = mixer.Sound('Audio/laser_shot.wav')
-                                bulletSound.play()
-                                self.bullets[0].fire(player.x-10) #bala esquerda
-                                self.bullets[1].fire(player.x + 10) #bala direita
-
-                    if event.type == pygame.KEYUP: #se soltar a mudança de x se torna 0 e o jogador fica parado
-                        if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT: #último evento for <- ou ->
-                            player.mov_x(0)
-
-                player.move() #atualiza local da nave
-                player.draw(self.screen) #desenha a nave
-            
-                #Movimentar e desenhar os inimigos, se for nave1 já compara se acertou
-                for enemy in enemies:
-                    enemy.move()
-                    if self.personagem_selecionado == 'nave1' and bullet.is_collision(enemy):
-                        somExplosao = mixer.Sound('Audio/explosion1.mp3')
-                        somExplosao.play()
-                        bullet.y = 720
-                        bullet.state = 'ready'
-                        self.score_value +=1
-                        enemy.reset_position()
-                    enemy.draw(self.screen)
-                
-                for enemy2 in enemies2:
-                    enemy2.move()
-                    if self.personagem_selecionado == 'nave1' and bullet.is_collision(enemy2):
-                        somExplosao = mixer.Sound('Audio/explosion1.mp3')
-                        somExplosao.play()
-                        bullet.y = 720
-                        bullet.state = 'ready'
-                        self.score_value +=2 #vale 2 pontos se acertar
-                        enemy2.reset_position()
-                    enemy2.draw(self.screen)
-
-                for enemy3 in enemies3:
-                    enemy3.move()
-                    if self.personagem_selecionado == 'nave1' and bullet.is_collision(enemy3):
-                        somExplosao = mixer.Sound('Audio/explosion1.mp3')
-                        somExplosao.play()
-                        bullet.y = 720
-                        bullet.state = 'ready'
-                        self.score_value +=2 #2 pontos se acertar
-                        enemy3.reset_position()                        
-                    enemy3.draw(self.screen)
-
-                #Monimentar as desenhar as balas da nave2
-                if  self.personagem_selecionado == 'nave2':
-                    for bullet in self.bullets:
-                        bullet.move()
-                        bullet.draw(self.screen)
-
-                        for enemy in enemies + enemies2 + enemies3:
-                            if bullet.is_collision(enemy):
-                                somExplosao = mixer.Sound('Audio/explosion1.mp3')
-                                somExplosao.play()
-                                bullet.y = 720
-                                bullet.state = 'ready'
-                                #comparar se o acertado foi do tipo 1, dois ou 3
-                                if isinstance(enemy, Inimigo):
-                                    self.score_value +=1
-                                elif isinstance(enemy, Inimigo2) or isinstance(enemy,Inimigo3):
-                                    self.score_value +=2
-                                enemy.reset_position()
-                    
-                #verifica se acertou o jogador
-                for enemy in enemies + enemies2 + enemies3:
-                    if enemy.power.is_collision(player): #se colidiu com o jogador
-                        somFim = mixer.Sound('Audio/morte.wav')
-                        somFim.play()
-                        running = False #termina o jogo
-                        break
-                    
-                if not running: #se terminou o jogo
-                    self.game_over_screen()
-                    return
-                else: #movimentar bala para nave1
-                    bullet.move()
-                    bullet.draw(self.screen)
-        
-        except pygame.error as e:
-            print(f"Erro durante a execução do jogo: {e}")
-            exit()       
-    
-    # Em main.py, substitua sua função game por esta:
+            pygame.display.update()#atualiza a tela
+ 
     def game(self):
         self.score_value = 0
         
-        # --- CONFIGURAÇÃO INICIAL DO JOGO ---
+        #CONFIGURAÇÃO INICIAL
         try:
             mixer.music.play(-1)
 
@@ -295,11 +169,12 @@ class SpaceProtectors():
                 bullet = Bullet(0, 720, 'Image/laser_amarelo.png', 10)
             else: # Se for nave2
                 player_image = 'Image/nave2.png'
-                caminho_bala_nave2 = 'Image/laser_amarelo.png' # Use o nome real do seu arquivo
-                self.bullets = [Bullet(0, 720, caminho_bala_nave2, 5), Bullet(0, 720, caminho_bala_nave2, 4)]
+                caminho_bala_nave2 = 'Image/laser_amarelo.png'
+                self.bullets = [Bullet(0, 720, caminho_bala_nave2, 5), Bullet(0, 720, caminho_bala_nave2, 4)] #lista de balas (dupla)
 
             player = Jogador(370, 720, player_image)
 
+            #lista com todos os inimigos
             inimigos = []
             inimigos.extend([Inimigo(random.randint(0,950), random.randint(50,150), 6, 20, 'Image/inimigo5.png', 1, 'Image/poderenemy.png') for _ in range(5)])
             inimigos.extend([Inimigo2(random.randint(0,950), random.randint(50,150), 3.0, 20, 'Image/inimigo4.png', 1.0, 'Image/poderenemy2.png', (60,60)) for _ in range(6)])
@@ -319,10 +194,10 @@ class SpaceProtectors():
                 if event.type == pygame.QUIT:
                     running = False
                 
-                if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_LEFT:
+                if event.type == pygame.KEYDOWN: #ao apertar uma tecla (move +-4px cada vez e atira ao apertar espaço)
+                    if event.key == pygame.K_LEFT or event.key == pygame.K_a: 
                         player.mov_x = -4
-                    if event.key == pygame.K_RIGHT:
+                    if event.key == pygame.K_RIGHT or event.key == pygame.K_d:
                         player.mov_x = 4
                     if event.key == pygame.K_SPACE:
                         if self.personagem_selecionado == 'nave1' and bullet.state == "ready":
@@ -334,7 +209,7 @@ class SpaceProtectors():
                             self.bullets[1].fire(player.x + 15)
 
                 if event.type == pygame.KEYUP:
-                    if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
+                    if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT or event.key == pygame.K_a or event.key == pygame.K_d:
                         player.mov_x = 0
 
             player.move()
@@ -343,12 +218,12 @@ class SpaceProtectors():
             if self.personagem_selecionado == 'nave1':
                 bullet.move()
                 bullet.draw(self.screen)
-                for enemy in inimigos:
+                for enemy in inimigos: #for que testa se acertou o inimigo
                     if bullet.is_collision(enemy):
-                        mixer.Sound('Audio/explosion1.mp3').play()
+                        mixer.Sound('Audio/explosion1.mp3').play() #aúdio de tiro
                         bullet.y = 720
                         bullet.state = 'ready'
-                        self.score_value += 2 if not isinstance(enemy, Inimigo) or isinstance(enemy, (Inimigo2, Inimigo3)) else 1
+                        self.score_value += 2 if not isinstance(enemy, Inimigo) or isinstance(enemy, (Inimigo2, Inimigo3)) else 1 #2 pontos para o inimigo 2 e 3, e 1 para o boca
                         enemy.reset_position()
             else: # Se for nave2
                 for bullet in self.bullets:
@@ -362,7 +237,7 @@ class SpaceProtectors():
                             self.score_value += 2 if not isinstance(enemy, Inimigo) or isinstance(enemy, (Inimigo2, Inimigo3)) else 1
                             enemy.reset_position()
 
-            for enemy in inimigos:
+            for enemy in inimigos: #for para mover e desenhar o inimigo
                 enemy.move()
                 enemy.draw(self.screen)
                 if enemy.power.is_collision(player):
@@ -370,30 +245,30 @@ class SpaceProtectors():
                     running = False
                     break 
 
-            self.mostrar_score(10, 10)
-            pygame.display.update()
+            self.mostrar_score(10, 10) #mostra score no canto superior esquerdo
+            pygame.display.update() #atualiza a tela
         
-        self.game_over_screen()
+        self.game_over_screen()#quando running==false abre a tela de game over
 
     def run(self):
         while True:
             try:
                 self.personagem_selecionado = self._menu.mostrarMenu()
-                if self.personagem_selecionado == 'view_scores':
+                if self.personagem_selecionado == 'view_scores': #se apertar o botão de score irá alterar o valor do personagem e abrir a tela score
                     self._menu.mostrarScore()
                 else:
-                    self.game()
+                    self.game() #senão roda o jogo
             except Exception as e:
                 print(f"Ocorreu um erro: {e}")
                 exit()
 
 if __name__ == "__main__":
-    # try:
-    game_instance = SpaceProtectors()
-    game_instance.run()
-    # except Exception as e:
-    #     print(f"Erro ao iniciar o jogo: {e}")
-    #     exit()
+    try:
+        game_instance = SpaceProtectors()
+        game_instance.run()
+    except Exception as e:
+         print(f"Erro ao iniciar o jogo: {e}")
+         exit()
 
                     
 

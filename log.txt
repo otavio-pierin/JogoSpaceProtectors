@@ -27,3 +27,13 @@ Score: 7, nave1
 Score: 44, nave1
 Score: 10, nave2
 Score: 5, nave1
+Score: 18, nave2
+Score: 2, nave2
+Score: 2, nave2
+Score: 14, nave2
+Score: 2, nave2
+Score: 2, nave2
+Score: 11, nave2
+Score: 10, nave2
+Score: 2, nave2
+Score: 40, nave2
