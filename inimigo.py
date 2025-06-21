@@ -4,11 +4,12 @@ from objeto import Objeto
 from poder import Poder
 
 class Inimigo(Objeto):
-    def __init__(self, x, y, speed_x, speed_y, image_path, speed_poder, image_poder):
+    def __init__(self, x, y, speed_x, speed_y, image_path, speed_poder, image_poder, chance_disparo):
         super().__init__(x, y, image_path)
         self.__speed_x = speed_x
         self.__speed_y = speed_y
         self.__power = Poder(self.x, self.y, image_poder, speed_poder)
+        self.__chance_disparo = chance_disparo
 
     # Getters e setters para a velocidade em x
     @property
@@ -35,7 +36,14 @@ class Inimigo(Objeto):
 
     @power.setter
     def power(self, value):
-        self.__power = value        
+        self.__power = value      
+
+    @property
+    def chance_disparo(self)  :
+        return self.__chance_disparo
+    @chance_disparo.setter
+    def chance_disparo(self,valor:int):
+        self.__chance_disparo=valor
     
     #método para mover o inimigo
     def move(self):
@@ -44,7 +52,7 @@ class Inimigo(Objeto):
            self.speed_x *=-1
            self.y += self.speed_y
 
-        if self.power.state == "ready" and random.randint(0,100)<5: #chance de 5% de disparar um poder
+        if self.power.state == "ready" and random.randint(0,100)<self.chance_disparo:
             self.power.fire(self.x + 16, self.y +32)
 
     #desenhar o inimigo e o pode na tela

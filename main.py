@@ -3,7 +3,6 @@ import random
 from pygame import mixer
 from jogador import Jogador
 from inimigo import Inimigo
-from inimigo2 import Inimigo2
 from inimigo3 import Inimigo3
 from bullet import Bullet
 from menu import Menu
@@ -98,7 +97,7 @@ class SpaceProtectors():
     #salvar pontuação
     def salvar_score(self):
         try:
-            with open("log.txt", "a") as file: #a -> append
+            with open("log.txt", "a") as file: #a -> append escreve no final
                 if self.score_value > 0:
                     file.write(f"Score: {self.score_value}, {self.personagem_selecionado}\n")
         except IOError as e:
@@ -175,10 +174,9 @@ class SpaceProtectors():
             player = Jogador(370, 720, player_image)
 
             #lista com todos os inimigos
-            inimigos = []
-            inimigos.extend([Inimigo(random.randint(0,950), random.randint(50,150), 6, 20, 'Image/inimigo5.png', 1, 'Image/poderenemy.png') for _ in range(5)])
-            inimigos.extend([Inimigo2(random.randint(0,950), random.randint(50,150), 3.0, 20, 'Image/inimigo4.png', 1.0, 'Image/poderenemy2.png', (60,60)) for _ in range(6)])
-            inimigos.extend([Inimigo3(random.randint(0,950), random.randint(50,150), 4.5, 2, 'Image/inimigo3.png', 2.0, 'Image/laser_vermelho.png', (60,60)) for _ in range(3)])
+            inimigos = [Inimigo(random.randint(0,950), random.randint(50,150), 6, 20, 'Image/inimigo5.png', 1, 'Image/poderenemy.png',5) for _ in range(5)]
+            inimigos.extend([Inimigo(random.randint(0,950), random.randint(50,150), 3.0, 20, 'Image/inimigo4.png', 1.0, 'Image/poderenemy2.png',3) for _ in range(6)])
+            inimigos.extend([Inimigo3(random.randint(0,950), random.randint(50,150), 4.5, 2, 'Image/inimigo3.png', 2.0, 'Image/laser_vermelho.png', (60,60),3) for _ in range(3)])
 
         except pygame.error as e:
             print(f"Erro ao carregar recursos do jogo: {e}")
@@ -223,7 +221,7 @@ class SpaceProtectors():
                         mixer.Sound('Audio/explosion1.mp3').play() #aúdio de tiro
                         bullet.y = 720
                         bullet.state = 'ready'
-                        self.score_value += 2 if not isinstance(enemy, Inimigo) or isinstance(enemy, (Inimigo2, Inimigo3)) else 1 #2 pontos para o inimigo 2 e 3, e 1 para o boca
+                        self.score_value += 2 if not isinstance(enemy, Inimigo) or isinstance(enemy, Inimigo3) else 1 #2 pontos para o inimigo 2 e 3, e 1 para o boca
                         enemy.reset_position()
             else: # Se for nave2
                 for bullet in self.bullets:
@@ -234,7 +232,7 @@ class SpaceProtectors():
                             mixer.Sound('Audio/explosion1.mp3').play()
                             bullet.y = 720
                             bullet.state = 'ready'
-                            self.score_value += 2 if not isinstance(enemy, Inimigo) or isinstance(enemy, (Inimigo2, Inimigo3)) else 1
+                            self.score_value += 2 if not isinstance(enemy, Inimigo) or isinstance(enemy, Inimigo3) else 1
                             enemy.reset_position()
 
             for enemy in inimigos: #for para mover e desenhar o inimigo

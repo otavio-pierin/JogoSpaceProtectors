@@ -39,3 +39,11 @@ Score: 2, nave2
 Score: 40, nave2
 Score: 19, nave1
 Score: 33, nave2
+Score: 6, nave2
+Score: 13, nave2
+Score: 2, nave1
+Score: 24, nave1
+Score: 2, nave2
+Score: 1, nave1
+Score: 13, nave1
+Score: 4, nave2

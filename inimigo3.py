@@ -7,8 +7,8 @@ from poder import Poder
 class Inimigo3(Inimigo):
     #inimigo se move lentamente para baixo em zig-zag.
 
-    def __init__(self, x, y, speed_x, speed_y, image_path, speed_poder, image_poder, size):
-        super().__init__(x, y, speed_x, speed_y, image_path, speed_poder, image_poder)
+    def __init__(self, x, y, speed_x, speed_y, image_path, speed_poder, image_poder, size, chance_disparo):
+        super().__init__(x, y, speed_x, speed_y, image_path, speed_poder, image_poder,chance_disparo)
         self.image = pygame.transform.scale(self.image, size) #transforma a imagem do inimigo tupla(size,size)
         
         # Atributos para o zig-zag
@@ -44,7 +44,7 @@ class Inimigo3(Inimigo):
             self.speed_x *= -1
 
         # Lógica de tiro
-        if self.power.state == "ready" and random.randint(0, 100) < 3:  # 3% de chance de atirar
+        if self.power.state == "ready" and random.randint(0, 100) < self.chance_disparo:  # chance de atirar
             self.power.fire(self.x + 32, self.y + 32)
 
         # Se o inimigo ultrapassar a borda inferior da tela (800 de altura)
