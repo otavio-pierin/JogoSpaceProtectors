@@ -31,6 +31,6 @@ class Objeto(ABC):
     @abstractmethod
     def draw(self, screen):
         pass
-
+    @abstractmethod
     def move(self):
         pass

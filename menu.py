@@ -144,7 +144,7 @@ class Menu():
             with open("log.txt", "r", encoding="utf-8") as file:
                 scores_para_exibir = file.readlines()
             
-            scores_para_exibir = scores_para_exibir[-15:] #list slicing p/ mostrar só os 10 últimos
+            scores_para_exibir = scores_para_exibir[-15:] #list slicing p/ mostrar só os 15 últimos
             
             if not scores_para_exibir:
                 scores_para_exibir.append("Nenhuma pontuação registrada.\n")
