@@ -5,7 +5,6 @@ class Jogador(Objeto):
     def __init__(self, x, y, image_path):
         super().__init__(x, y, image_path)
         self.__mov_x = 0
-        self.__poder_especial = True
 
     #Getters e Setters
 
@@ -16,14 +15,6 @@ class Jogador(Objeto):
     @mov_x.setter
     def mov_x(self, move):
         self.__mov_x = move
-
-    #Getter e setter estado poder
-    @property
-    def poder_especial(self):
-        return self.__poder_especial
-    @poder_especial.setter
-    def poder_especial(self, valor):
-        self.__poder_especial = valor
     
     #Método para movimentação da nave
     def move(self):
